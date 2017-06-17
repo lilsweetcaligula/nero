@@ -57,8 +57,21 @@ int _write_t_buf(const char *s)
 
 int _print_descr(void)
 { 
-    for (size_t pos = 0; pos < _t_buf_pos; ++pos) {
-        (void)fputc(_t_buf[pos] ? _t_buf[pos] : ' ', stdout); 
+    size_t depth = 1;
+
+    for (size_t pos = 0; pos < _t_buf_pos; ++pos) 
+    {
+        if (_t_buf[pos]) {
+            (void)fputc(_t_buf[pos], stdout);
+        } else {
+            (void)fputc('\n', stdout);
+            
+            for (size_t i = 0; i < depth; ++i) {
+                (void)fputs("    ", stdout);
+            }
+            
+            ++depth;
+        }
     }
     
     return 37; 
